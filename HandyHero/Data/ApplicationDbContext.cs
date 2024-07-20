@@ -25,5 +25,38 @@ namespace HandyHero.Data
 
         public DbSet<Payment> Payments { get; set; }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            // Chat Configurations
+            modelBuilder.Entity<User>()
+                .HasMany(u => u.ChatParticipants)
+                .WithOne(p => p.User)
+                .HasForeignKey(p => p.UserId);
+
+            modelBuilder.Entity<Chat>()
+                .HasMany(c => c.Participants)
+                .WithOne(p => p.Chat)
+                .HasForeignKey(p => p.ChatId);
+
+            modelBuilder.Entity<Chat>()
+                .HasMany(c => c.Messages)
+                .WithOne(m => m.Chat)
+                .HasForeignKey(m => m.ChatId);
+
+            modelBuilder.Entity<ChatMessage>()
+                .HasOne(m => m.Sender)
+                .WithMany()
+                .HasForeignKey(m => m.SenderId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<ChatMessage>()
+                .HasOne(m => m.Receiver)
+                .WithMany()
+                .HasForeignKey(m => m.ReceiverId)
+                .OnDelete(DeleteBehavior.Restrict);
+            base.OnModelCreating(modelBuilder);
+        }
+
     }
-}
+   
+    }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 using HandyHero.Models;  // Add this line
 
 namespace HandyHero.Models
@@ -12,7 +13,9 @@ namespace HandyHero.Models
         public int Id { get; set; }
 
         [Required]
+        [JsonIgnore]
         public List<ChatParticipant> Participants { get; set; } = new List<ChatParticipant>();
+        [JsonIgnore]
         public List<ChatMessage> Messages { get; set; } = new List<ChatMessage>();
     }
 
